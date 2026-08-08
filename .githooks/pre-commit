@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+#
+# Guard against ever committing key material or location data to this
+# PUBLIC repository.
+#
+# This repository is published openly. The procedures in it are harmless,
+# but a filled-in REFERENCE DATA block, a seed, a share or an extended key
+# would not be. Once pushed, it is public permanently: deleting the commit
+# does not un-publish it.
+#
+# Enabled via:  git config core.hooksPath .githooks
+# Emergency bypass (think hard first):  git commit --no-verify
+
+set -uo pipefail
+
+fail=0
+
+# Added lines only, stripped of the leading '+'.
+added="$(git diff --cached -U0 --no-color -- . \
+        | grep -E '^\+' \
+        | grep -Ev '^\+\+\+' \
+        | sed 's/^\+//')"
+
+[ -z "$added" ] && exit 0
+
+report() {
+    printf '\n  BLOCKED: %s\n' "$1"
+    printf '  Offending line: %s\n' "$2"
+    fail=1
+}
+
+# ---------------------------------------------------------------------------
+# 1. REFERENCE DATA fields that have been filled in.
+#    Blank template values are underscores. Anything else is real data.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    value="${line#*:}"
+    # Strip whitespace and underscores. If anything is left, it was filled in.
+    residue="$(printf '%s' "$value" | tr -d '_ \t\r')"
+    if [ -n "$residue" ]; then
+        report "a REFERENCE DATA field has been filled in" "$line"
+    fi
+done < <(printf '%s\n' "$added" \
+         | grep -Ei '^[[:space:]]*(share[[:space:]]*[1-9][[:space:]]*location|passphrase[[:space:]]*location|wallet[[:space:]]*fingerprint|date[[:space:]]*created)[^:]*:')
+
+# ---------------------------------------------------------------------------
+# 2. Raw entropy: a 64 hex character string is a 256 bit seed.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -n "$line" ] && report "a 64 character hex string (this is seed entropy)" "$line"
+done < <(printf '%s\n' "$added" | grep -E '(^|[^0-9a-fA-F])[0-9a-fA-F]{64}([^0-9a-fA-F]|$)')
+
+# ---------------------------------------------------------------------------
+# 3. Extended keys and wallet descriptors.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -n "$line" ] && report "an extended key" "$line"
+done < <(printf '%s\n' "$added" | grep -E '\b([xyzuvt]prv|[xyzuvt]pub)[1-9A-HJ-NP-Za-km-z]{50,}')
+
+# ---------------------------------------------------------------------------
+# 4. On-chain addresses. Publishing one links this repo to a real balance.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -n "$line" ] && report "what looks like a Bitcoin address" "$line"
+done < <(printf '%s\n' "$added" | grep -E '\b(bc1[02-9ac-hj-np-z]{20,}|[13][1-9A-HJ-NP-Za-km-z]{25,34})\b')
+
+# ---------------------------------------------------------------------------
+# 5. Mnemonic word runs. A BIP-39 seed is 24 words, a SLIP-39 share is 33.
+#    The published BIP-39 "abandon ... art" test vector is exempt.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -n "$line" ] && report "a run of 12+ lowercase words (this looks like a mnemonic)" "$line"
+done < <(printf '%s\n' "$added" \
+         | grep -Ev 'abandon abandon abandon' \
+         | grep -E '\b([a-z]{3,8} ){11,}[a-z]{3,8}\b')
+
+# ---------------------------------------------------------------------------
+
+if [ "$fail" -ne 0 ]; then
+    cat <<'EOF'
+
+-------------------------------------------------------------------
+  Commit rejected.
+
+  This repository is PUBLIC. Pushing any of the above would expose
+  it permanently, and rewriting history afterwards does not reliably
+  remove it once GitHub has served it.
+
+  Key material and share locations belong on paper and on the
+  private copy, never here.
+
+  If this is genuinely a false positive:  git commit --no-verify
+-------------------------------------------------------------------
+EOF
+    exit 1
+fi
+
+exit 0

@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Key material by file type. These extensions never belong in a public
+# repository, and unlike name-based patterns they do not collide with
+# legitimately named documentation.
+#
+# Note: content filtering is handled by .githooks/pre-commit, which is the
+# real guard. Do not add broad name patterns such as *seed* or *wallet*
+# here: they silently exclude whole directories of legitimate docs.
+*.key
+*.pem
+*.p12
+*.pfx
+*.kdbx
+*.gpg
+*.asc
+*.psbt
+*.jade
+*.wallet
