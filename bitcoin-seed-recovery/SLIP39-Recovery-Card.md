@@ -1,5 +1,10 @@
 # SEED RECOVERY PROCEDURE — 2-of-4 SLIP-39
 
+**PART 1 of 2.** This part rebuilds the seed. It is not sufficient on its own:
+the seed alone opens a valid but **empty** wallet. Continue with
+[PART 2: Passphrase and verification](Passphrase-And-Verification.md), which
+explains the BIP-39 passphrase and how to confirm you have the right wallet.
+
 **This document contains no secrets. Store one copy with each share.**
 Without it, the shares are unusable.
 
@@ -156,9 +161,14 @@ It exists only in RAM.
 2. Enter the 24 words from Step D2.
 3. Enter the **BIP-39 passphrase** when prompted (stored separately from these shares).
 4. Set a new PIN.
-5. **Confirm the wallet fingerprint matches the reference below** (bottom right of Jade's screen).
+5. **Confirm the wallet fingerprint** (bottom right of Jade's screen).
 
-If the fingerprint does not match, the passphrase is wrong — the seed is fine.
+**Do not interpret a fingerprint mismatch here on its own.** A single value
+cannot tell you whether the seed or the passphrase is at fault. Follow the
+two-stage check in
+[PART 2, section 2](Passphrase-And-Verification.md#2-the-fingerprint-check):
+verify the seed first with no passphrase, then add the passphrase. Only then
+does a mismatch identify which step failed.
 
 ---
 

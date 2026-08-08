@@ -10,9 +10,19 @@ do it with.
 
 ## Contents
 
-| Guide | What it covers |
-|---|---|
-| [Bitcoin seed recovery, 2-of-4 SLIP-39](bitcoin-seed-recovery/SLIP39-Recovery-Card.md) | Reconstructing a BIP-39 seed from SLIP-39 shares on an air-gapped machine, and restoring it to a hardware wallet. Includes rebuilding the required toolchain from scratch if the original media are lost. |
+### Bitcoin seed recovery
+
+Read these in order. Part 1 rebuilds the seed, Part 2 turns it into the
+correct wallet and proves the result is right.
+
+| | Guide | What it covers |
+|---|---|---|
+| 1 | [Seed reconstruction, 2-of-4 SLIP-39](bitcoin-seed-recovery/SLIP39-Recovery-Card.md) | Rebuilding a BIP-39 seed from SLIP-39 shares on an air-gapped machine, and restoring it to a hardware wallet. Includes rebuilding the required toolchain from scratch if the original media are lost. |
+| 2 | [Passphrase and verification](bitcoin-seed-recovery/Passphrase-And-Verification.md) | Why the shares alone open an empty wallet, how the BIP-39 passphrase fits in, and how to use the two wallet fingerprints to prove whether a failure is a bad seed or a bad passphrase. |
+
+> If you are following these with shares in hand: the passphrase is not in
+> this repository and never will be. It is held separately, and Part 2
+> explains where to look for that.
 
 ## Why this is public
 

@@ -1,3 +1,10 @@
+# The location sheet names where the second factor is kept. It is the one
+# document that must never reach this public repository. The pre-commit hook
+# blocks its contents too, in case it is ever renamed.
+LOCATION-SHEET-PRIVATE.md
+*LOCATION-SHEET*
+*location-sheet*
+
 # macOS
 .DS_Store
 ._*

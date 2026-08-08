@@ -16,7 +16,9 @@ set -uo pipefail
 fail=0
 
 # Added lines only, stripped of the leading '+'.
-added="$(git diff --cached -U0 --no-color -- . \
+# The hook is excluded from its own scan: its pattern list necessarily
+# contains the very keywords it blocks.
+added="$(git diff --cached -U0 --no-color -- . ':(exclude).githooks/pre-commit' \
         | grep -E '^\+' \
         | grep -Ev '^\+\+\+' \
         | sed 's/^\+//')"
@@ -74,6 +76,17 @@ while IFS= read -r line; do
 done < <(printf '%s\n' "$added" \
          | grep -Ev 'abandon abandon abandon' \
          | grep -E '\b([a-z]{3,8} ){11,}[a-z]{3,8}\b')
+
+# ---------------------------------------------------------------------------
+# 6. Storage locations for the passphrase or the Emergency Kit.
+#    Naming where the second factor lives turns two factors into one.
+#    These belong on the location sheet, which is never committed.
+# ---------------------------------------------------------------------------
+while IFS= read -r line; do
+    [ -n "$line" ] && report "a named storage location for the second factor" "$line"
+done < <(printf '%s\n' "$added" \
+         | grep -Eiv '^[[:space:]]*(#|//)' \
+         | grep -Ei '1[[:space:]]*password|onepassword|synology|diskstation|quickconnect|bitwarden|lastpass|keepass|dashlane|emergency[[:space:]]*kit|secret[[:space:]]*key|master[[:space:]]*password|safe[[:space:]]*deposit|bank[[:space:]]*vault')
 
 # ---------------------------------------------------------------------------
 
