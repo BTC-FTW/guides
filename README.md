@@ -24,6 +24,13 @@ correct wallet and proves the result is right.
 > this repository and never will be. It is held separately, and Part 2
 > explains where to look for that.
 
+### Print version
+
+[`print/seed-recovery-procedure.pdf`](print/seed-recovery-procedure.pdf)
+holds Parts 1 and 2 as one A4 document. It is built from the two Markdown
+files above by `print/build_pdf.py`, so the paper copy always matches the
+text here. Rebuild it after any change to either guide.
+
 ## Why this is public
 
 A recovery procedure is only useful if it can still be found years later,

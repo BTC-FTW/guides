@@ -41,13 +41,12 @@ Work through section 2 first.
 
 ## 1. OBTAINING THE PASSPHRASE
 
-The passphrase is **not in this repository**, **not on the share cards**, and
+The passphrase is **not in this document**, **not on the share cards**, and
 **not in Part 1**. It is held separately, and deliberately so: anyone who
 steals shares must still not be able to reach the funds.
 
-It is recorded on the **location sheet** that accompanies this procedure. The
-location sheet is kept apart from the shares and is given to a different set
-of people.
+Where it is kept is written on a separate **location sheet**. That sheet is
+never stored with a share, and it is given to a different set of people.
 
 **If you hold shares but have no location sheet, stop here.** You cannot
 complete recovery alone. Contact the other holders. Two of four shares plus
@@ -76,8 +75,12 @@ A **wallet fingerprint** is 8 hexadecimal characters, for example `a1b2c3d4`.
 It is derived from the wallet's public key, so it reveals nothing about the
 funds, but it is unique to one specific seed and passphrase combination.
 
-The Jade displays it once a wallet is loaded, at the bottom right of the
-screen.
+Where to read it:
+
+| Device | Where the fingerprint is shown |
+|---|---|
+| Jade / Jade Plus | Bottom right of the screen once a wallet is unlocked. The companion app (Green, Sparrow) shows it too |
+| COLDCARD Q | `Advanced/Tools` → `View Identity` (Master Key Fingerprint). After a passphrase, also on its confirmation screen |
 
 Two reference fingerprints are recorded, and comparing them **in order** tells
 you exactly which step went wrong:
@@ -86,6 +89,11 @@ you exactly which step went wrong:
 
 Load the seed with the passphrase feature switched **off**. Compare the
 fingerprint to `Fingerprint A` on the reference card.
+
+- **Jade:** before unlocking, open `Options` → `BIP39 Passphrase` and set it
+  to `Disabled`. Then unlock with the PIN.
+- **COLDCARD Q:** right after the import in Part 1, before using
+  `Passphrase`, open `Advanced/Tools` → `View Identity`.
 
 | Result | Meaning | Action |
 |---|---|---|
@@ -98,6 +106,13 @@ a wrong seed makes the failure impossible to diagnose.
 ### Step 2: check the passphrase
 
 Now load the wallet **with** the passphrase. Compare to `Fingerprint B`.
+
+- **Jade:** switch the Jade off and on. Before unlocking, open `Options` →
+  `BIP39 Passphrase` and set it to `Always Ask`. Unlock with the PIN and type
+  the passphrase when asked. The Jade only asks if this setting is on.
+- **COLDCARD Q:** main menu `Passphrase`, type it, press ENTER. The
+  confirmation screen shows the new fingerprint. Confirm it only if it
+  matches B.
 
 | Result | Meaning | Action |
 |---|---|---|
@@ -130,7 +145,8 @@ Never destroy or overwrite the shares while any doubt remains.
 - Never photograph the seed, the passphrase or a screen showing either.
 - A wrong attempt is harmless and unlimited. There is no lockout and no
   penalty for retrying, because each attempt simply opens a different wallet.
-- When finished, follow the teardown steps in PART 1 section F.
+- If the Tails computer is still running, follow the teardown steps in
+  PART 1 section F.
 
 ---
 
@@ -142,7 +158,7 @@ Never destroy or overwrite the shares while any doubt remains.
 Fingerprint A, seed with NO passphrase  : ________________
 Fingerprint B, seed WITH passphrase     : ________________
 Passphrase contains non-English chars   : yes / no
-Jade menu path to the passphrase setting: ________________
+Jade menu path to the passphrase setting: Options > BIP39 Passphrase
 Date these values were last verified    : ________________
 ```
 

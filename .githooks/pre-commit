@@ -44,7 +44,7 @@ while IFS= read -r line; do
         report "a REFERENCE DATA field has been filled in" "$line"
     fi
 done < <(printf '%s\n' "$added" \
-         | grep -Ei '^[[:space:]]*(share[[:space:]]*[1-9][[:space:]]*location|passphrase[[:space:]]*location|wallet[[:space:]]*fingerprint|date[[:space:]]*created)[^:]*:')
+         | grep -Ei '^[[:space:]]*(share[[:space:]]*[1-9][[:space:]]*location|passphrase[[:space:]]*location|wallet[[:space:]]*fingerprint|fingerprint[[:space:]]+[ab][^a-z0-9]|date[[:space:]]*created)[^:]*:')
 
 # ---------------------------------------------------------------------------
 # 2. Raw entropy: a 64 hex character string is a 256 bit seed.
