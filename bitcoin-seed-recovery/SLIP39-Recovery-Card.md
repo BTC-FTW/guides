@@ -38,17 +38,22 @@ Without it, the shares are very hard to use.
 
 ## A. RE-CREATE THE WHEELS USB (only if lost)
 
-Needs a Windows computer with internet access and Python 3.10 or newer
-(from `python.org`). **Do this before going offline.**
+Needs a Windows computer with internet access and Python 3.10 or newer.
+Install Python from `python.org` with the default options, then open a new
+**Command Prompt**. **Do this before going offline.**
 
 **A1.** Download the packages `[ONE LINE]`
 
 ```
-python -m pip download "shamir-mnemonic[cli]==0.3.0" "mnemonic==0.21" "click==8.4.2" -d wheels
+py -m pip download "shamir-mnemonic[cli]==0.3.0" "mnemonic==0.21" "click==8.4.2" -d wheels
 ```
 
-**A2.** Format a USB stick as FAT32 and name it `WHEELS`. Copy the files to
-it. Here the stick is drive `E:`, use the letter your stick has.
+> If Windows says `py` is not recognized, type `python` instead of `py` at
+> the start of A1. A notice that a new pip release is available is harmless.
+
+**A2.** Format a USB stick as FAT32 and name it `WHEELS`. If Windows only
+offers exFAT (sticks over 32 GB), exFAT works too. Copy the files to it. Here
+the stick is drive `E:`, use the letter your stick has.
 
 ```
 xcopy wheels E: /s /e
@@ -84,12 +89,17 @@ implementation from before 2024 will not decode them correctly.
 Needs a computer with internet access and GnuPG. On Windows, install
 Gpg4win from `gpg4win.org` and type the commands below in Command Prompt.
 
-**B1.** From `https://tails.net/install/` download these three files into one
-folder, then open the terminal in that folder:
+**B1.** Open `https://tails.net/install/download/` and save these three
+links into one folder (about 1.8 GB in total):
 
-- `tails-amd64-<version>.img`
-- `tails-amd64-<version>.img.sig`
-- `tails-signing.key` (from `https://tails.net/tails-signing.key`)
+| Link on the page | File you get |
+|---|---|
+| **Download Tails** `<version>` **USB image** | `tails-amd64-<version>.img` |
+| **OpenPGP signature** | `tails-amd64-<version>.img.sig` |
+| **OpenPGP signing key** | `tails-signing.key` |
+
+Then open the terminal in that folder. On Windows: open the folder in File
+Explorer, click the address bar, type `cmd` and press Enter.
 
 **B2.** Import the signing key
 
@@ -97,13 +107,19 @@ folder, then open the terminal in that folder:
 gpg --import tails-signing.key
 ```
 
+It ends with `imported: 1`. Lines saying that folders were created, that
+signatures were not checked, or that no ultimately trusted keys were found,
+are normal.
+
 **B3.** Show its fingerprint `[ONE LINE]`
 
 ```
 gpg --fingerprint A490D0F4D311A4153E2BB7CADBB802B258ACD84F
 ```
 
-The output must show exactly this fingerprint:
+The first fingerprint, on the line below `pub`, must be exactly this (gpg
+leaves a wider gap in the middle). Newer gpg versions list more fingerprints
+below it, for the subkeys. Those are normal.
 **`A490 D0F4 D311 A415 3E2B B7CA DBB8 02B2 58AC D84F`**
 
 > **Check this fingerprint against tails.net itself AND one independent
@@ -123,7 +139,8 @@ gpg --verify tails-amd64-<version>.img.sig tails-amd64-<version>.img
 | `WARNING: This key is not certified with a trusted signature` | Normal, not tampering |
 | `BAD signature` | **STOP** |
 
-**B5.** Write the `.img` file to a USB stick with balenaEtcher or Rufus.
+**B5.** Write the `.img` file to a USB stick of 8 GB or more with
+balenaEtcher or Rufus. Everything already on that stick is erased.
 
 ---
 
@@ -219,8 +236,10 @@ python3 -m shamir_mnemonic.cli recover
 - At `Enter a recovery share`, type **all 33 words of one share on a single
   line**, separated by spaces, in the exact written order. Then press Enter.
 - It then asks for a second share. Any of the other three works.
-- If it prints `ERROR`, a word is mistyped or out of order. Check that share
-  and type it again. It keeps asking until it has two good shares.
+- If it prints `ERROR: Invalid mnemonic checksum`, a word is mistyped or
+  out of order. Check that share and type it again. `ERROR: Share already
+  entered` means you typed the same share twice. It keeps asking until it
+  has two good shares.
 - When it has two, it prints `SUCCESS!` and then
   `Your master secret is:` followed by 64 characters. That is the hex.
 

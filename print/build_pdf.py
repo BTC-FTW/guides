@@ -41,7 +41,7 @@ CSS = """
   @bottom-right { content: "Page " counter(page) " of " counter(pages);
                   font: 8pt "Helvetica Neue", Arial, sans-serif; color: #666; }
 }
-html { font: 10pt/1.32 "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000; }
+html { font: 9.9pt/1.31 "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000; }
 body { margin: 0; }
 h1 { font-size: 17pt; margin: 0 0 8pt; padding-bottom: 4pt; border-bottom: 2pt solid #000; }
 h2 { font-size: 12.5pt; margin: 11pt 0 5pt; padding-top: 4pt; border-top: 0.75pt solid #999; }
@@ -54,18 +54,18 @@ li > ul { margin: 2pt 0 0; }
 code, pre { font-family: Menlo, "DejaVu Sans Mono", monospace; }
 code { font-size: 9.3pt; background: #eee; padding: 0 2pt; border-radius: 2pt; }
 pre {
-  font-size: 9.6pt; line-height: 1.45; background: #eee; border: 0.75pt solid #888;
+  font-size: 9.6pt; line-height: 1.36; background: #eee; border: 0.75pt solid #888;
   padding: 4pt 7pt; margin: 2pt 0 6pt; white-space: pre-wrap; overflow-wrap: anywhere;
   break-inside: avoid;
 }
-pre.fillin { line-height: 2.3; background: #fff; }
+pre.fillin { line-height: 2.1; background: #fff; }
 pre code { background: none; padding: 0; font-size: inherit; }
 .badge {
   font: bold 7.5pt "Helvetica Neue", Arial, sans-serif; letter-spacing: 0.3pt;
   border: 0.75pt solid #000; border-radius: 2pt; padding: 0 3pt; white-space: nowrap;
 }
 blockquote {
-  margin: 4pt 0 8pt; padding: 5pt 8pt; border: 1.2pt solid #000; background: #fff6e0;
+  margin: 3pt 0 7pt; padding: 4pt 8pt; border: 1.2pt solid #000; background: #fff6e0;
   break-inside: avoid;
 }
 blockquote p:last-child { margin-bottom: 0; }
